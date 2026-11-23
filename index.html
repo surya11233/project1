@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud Ops Demo Site</title>
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --ink: #14213d;
+      --muted: #52607a;
+      --panel: #ffffff;
+      --accent: #1d4ed8;
+      --ok: #15803d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    header {
+      background: var(--ink);
+      color: #fff;
+      padding: 18px 24px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    main {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+    h1 { font-size: 2.2rem; margin: 0 0 8px; }
+    p.lead { color: var(--muted); margin: 0 0 32px; max-width: 60ch; }
+    .panel {
+      background: var(--panel);
+      border-left: 5px solid var(--accent);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    .panel h2 { margin: 0 0 12px; font-size: 1.1rem; }
+    .row { display: flex; justify-content: space-between; padding: 6px 0;
+           border-bottom: 1px solid #e3e8ef; }
+    .row:last-child { border-bottom: none; }
+    .ok { color: var(--ok); font-weight: 600; }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+    footer { text-align: center; color: var(--muted); padding: 30px 0; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>Cloud Ops Demo Site</header>
+
+  <main>
+    <h1>Site is running</h1>
+    <p class="lead">
+      A simple website for practicing AWS monitoring and troubleshooting.
+      Break it, find the cause, fix it, and write it up.
+    </p>
+
+    <section class="panel">
+      <h2>Status</h2>
+      <div class="row"><span>Website</span><span class="ok">Online</span></div>
+      <div class="row"><span>Served from</span><span id="host"></span></div>
+      <div class="row"><span>Your local time</span><span id="time"></span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Page loads in this browser</h2>
+      <p>Count: <strong id="count">0</strong></p>
+      <button id="reset">Reset count</button>
+    </section>
+  </main>
+
+  <footer>Cloud Support and Operations practice project</footer>
+
+  <script>
+    document.getElementById("host").textContent = location.host || "local file";
+
+    function tick() {
+      document.getElementById("time").textContent = new Date().toLocaleTimeString();
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    var count = Number(sessionStorage.getItem("loads") || 0) + 1;
+    sessionStorage.setItem("loads", count);
+    document.getElementById("count").textContent = count;
+
+    document.getElementById("reset").addEventListener("click", function () {
+      sessionStorage.setItem("loads", 0);
+      document.getElementById("count").textContent = 0;
+    });
+  </script>
+</body>
+</html>
